@@ -95,9 +95,33 @@ public class MapUtilsTest {
         Assertions.assertTrue(johnHobbies.contains("Painting"));
         Assertions.assertEquals(1, johnClasses.size());
         Assertions.assertEquals(1, johnClasses.get(0));
-        // John Wick assertions, Jane Smith assertions
+        // People assertions
         List<Map<String, Object>> people = (List<Map<String, Object>>) this.mapUtils.read(this.map1, "people").orElse(new ArrayList<>());
         Assertions.assertEquals(3, people.size());
+        // Jane Smith assertions
+        String janeFirstName = (String) this.mapUtils.read(this.map1, "people.1.firstName").orElse(null);
+        String janeLastName = (String) this.mapUtils.read(this.map1, "people.1.lastName").orElse(null);
+        String janeSsn = (String) this.mapUtils.read(this.map1, "people.1.identifiers.0.value").orElse(null);
+        Integer janeAge = (Integer) this.mapUtils.read(this.map1, "people.1.age").orElse(null);
+        Collection<String> janeHobbies = (Collection<String>) this.mapUtils.read(this.map1, "people.1.hobbies").orElse(new ArrayList<>());
+        Assertions.assertEquals("Jane", janeFirstName);
+        Assertions.assertEquals("Smith", janeLastName);
+        Assertions.assertEquals("122-34-5567", janeSsn);
+        Assertions.assertEquals(23, janeAge);
+        Assertions.assertTrue(janeHobbies.contains("Tennis"));
+        Assertions.assertTrue(janeHobbies.contains("Gaming"));
+        // John Wick assertions
+        String wickFirstName = (String) this.mapUtils.read(this.map1, "people.2.firstName").orElse(null);
+        String wickLastName = (String) this.mapUtils.read(this.map1, "people.2.lastName").orElse(null);
+        String wickSsn = (String) this.mapUtils.read(this.map1, "people.2.identifiers.0.value").orElse(null);
+        Integer wickAge = (Integer) this.mapUtils.read(this.map1, "people.2.age").orElse(null);
+        Collection<String> wickHobbies = (Collection<String>) this.mapUtils.read(this.map1, "people.2.hobbies").orElse(new ArrayList<>());
+        Assertions.assertEquals("John", wickFirstName);
+        Assertions.assertEquals("Wick", wickLastName);
+        Assertions.assertEquals("???-??-????", wickSsn);
+        Assertions.assertEquals(28, wickAge);
+        Assertions.assertTrue(wickHobbies.contains("Cars"));
+        Assertions.assertTrue(wickHobbies.contains("Dogs"));
         // Classes assertion
         List<Object> classes = (List<Object>) this.mapUtils.read(this.map1, "classes").orElse(new ArrayList<>());
         Assertions.assertEquals(1, classes.size());
