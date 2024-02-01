@@ -1,0 +1,45 @@
+{
+  "people": [
+    {
+      "id": 1,
+      "firstName": "John",
+      "lastName": "Doe",
+      "identifiers": [
+        {
+          "type": "SSN",
+          "value": "345-67-8900"
+        },
+        {
+          "type": "Nickname",
+          "value": "Johnny"
+        }
+      ],
+      "age": 25,
+      "hobbies": [
+        "Hiking", "Painting", "Baking"
+      ],
+      "classes": [1]
+    },
+    {
+      "id": 5,
+      "firstName": "John",
+      "lastName": "Wick",
+      "identifiers": [
+        {
+          "type": "SSN",
+          "value": "123-44-5567"
+        }
+      ],
+      "age": 28,
+      "hobbies": [
+        "Cars", "Dogs"
+      ]
+    }
+  ],
+  "classes": [
+    {
+      "id": 1,
+      "name": "Introduction to Baking"
+    }
+  ]
+}
