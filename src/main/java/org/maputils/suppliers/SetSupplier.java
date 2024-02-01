@@ -1,4 +1,4 @@
-package org.maputils;
+package org.maputils.suppliers;
 
 import java.util.HashSet;
 import java.util.LinkedHashSet;

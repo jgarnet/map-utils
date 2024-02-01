@@ -127,6 +127,50 @@ public class MapUtilsTest {
         Assertions.assertEquals(1, classes.size());
     }
 
+    @Test
+    public void testAssignWithoutPaths() {
+        try {
+            Map<String, String> paths = new HashMap<String, String>() {{
+                put("person1Id", "people.0.id");
+                put("person1FirstName", "people.0.firstName");
+                put("person1LastName", "people.0.lastName");
+                put("person1Hobbies", "people.0.hobbies");
+            }};
+            Map<String, Object> result = new LinkedHashMap<>();
+            this.mapUtils.assign(result, this.map1, paths, false);
+            Assertions.assertEquals(1, result.get("person1Id"));
+            Assertions.assertEquals("John", result.get("person1FirstName"));
+            Assertions.assertEquals("Doe", result.get("person1LastName"));
+            Collection<String> hobbies = (Collection<String>) result.get("person1Hobbies");
+            Assertions.assertTrue(hobbies.contains("Hiking"));
+            Assertions.assertTrue(hobbies.contains("Painting"));
+        } catch (Exception e) {
+            Assertions.fail();
+        }
+    }
+
+    @Test
+    public void testAssignWithPaths() {
+        try {
+            Map<String, String> paths = new HashMap<String, String>() {{
+                put("person.id", "people.0.id");
+                put("person.firstName", "people.0.firstName");
+                put("person.lastName", "people.0.lastName");
+                put("person.hobbies", "people.0.hobbies");
+            }};
+            Map<String, Object> result = new LinkedHashMap<>();
+            this.mapUtils.assign(result, this.map1, paths, true);
+            Assertions.assertEquals(1, this.mapUtils.read(result, "person.id").orElse(null));
+            Assertions.assertEquals("John", this.mapUtils.read(result, "person.firstName").orElse(null));
+            Assertions.assertEquals("Doe", this.mapUtils.read(result, "person.lastName").orElse(null));
+            Collection<String> hobbies = (Collection<String>) this.mapUtils.read(result, "person.hobbies").orElse(new ArrayList<>());
+            Assertions.assertTrue(hobbies.contains("Hiking"));
+            Assertions.assertTrue(hobbies.contains("Painting"));
+        } catch (Exception e) {
+            Assertions.fail();
+        }
+    }
+
     private Map<String, Object> getMap(String fileName) {
         try (InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName)) {
             if (in != null) {

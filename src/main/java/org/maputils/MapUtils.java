@@ -1,5 +1,9 @@
 package org.maputils;
 
+import org.maputils.suppliers.ListSupplier;
+import org.maputils.suppliers.MapSupplier;
+import org.maputils.suppliers.SetSupplier;
+
 import java.util.*;
 
 /**
