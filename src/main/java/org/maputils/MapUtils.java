@@ -252,7 +252,7 @@ public class MapUtils {
      * If target contain overlapping keys with source, the values will be overwritten.
      * @param target The target Map values are being assigned to.
      * @param source The source Map values are being assigned from.
-     * @param keys The paths to assign.
+     * @param keys The paths to assign. Left-hand side contains paths to assign to target, right-hand side contains paths to read from source.
      * @param assignPaths Toggles whether keys can contain nested paths.
      */
     public void assign(Map target, Map source, Map<String, String> keys, boolean assignPaths) {
