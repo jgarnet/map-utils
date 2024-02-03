@@ -76,8 +76,9 @@ public class MapUtils {
                     return Optional.empty();
                 }
                 current = ((List<Object>) current).get(Integer.parseInt(node));
+            } else if (current instanceof Collection) {
+                return Optional.empty();
             }
-            // todo: add support for other Collection types?
         }
         return (Optional<T>) Optional.of(current);
     }
@@ -205,50 +206,9 @@ public class MapUtils {
                 Optional<Object> result = this.read(map, part);
                 result.ifPresent(sb::append);
             }
-            return this.read(map, sb.toString()).map(Object::toString).orElse(null);
+            return sb.toString();
         }
         return this.read(map, collectionKey).map(Object::toString).orElse(null);
-    }
-
-    /**
-     * Returns a deep clone of a Map
-     * @param map The Map being cloned
-     * @return A deep cloned Map
-     */
-    public Map<Object, Object> cloneDeep(Map<Object, Object> map) {
-        Map<Object, Object> clone = this.mapSupplier.getSupplier().apply(map.size());
-        for (Map.Entry<?, ?> entry : map.entrySet()) {
-            Object key = entry.getKey();
-            Object value = entry.getValue();
-            clone.put(key, this.cloneDeepValue(value));
-        }
-        return clone;
-    }
-
-    private <T extends Map> Object cloneDeepValue(Object value) {
-        if (value instanceof Map) {
-            return this.cloneDeep((Map<Object, Object>) value);
-        } else if (value instanceof List) {
-            List<Object> list = this.listSupplier.getSupplier().apply(((List) value).size());
-            this.cloneCollection(list, (List) value);
-            return list;
-        } else if (value instanceof Set) {
-            Set<Object> set = this.setSupplier.getSupplier().apply(((Set) value).size());
-            this.cloneCollection(set, (Set) value);
-            return set;
-        }
-        // todo: account for non-primitive objects?
-        return value;
-    }
-
-    private void cloneCollection(Collection<Object> target, Collection<Object> source) {
-        for (Object subValue : source) {
-            if (subValue instanceof Map) {
-                target.add(this.cloneDeep((Map<Object, Object>) subValue));
-            } else {
-                target.add(this.cloneDeepValue(subValue));
-            }
-        }
     }
 
     /**
@@ -269,7 +229,6 @@ public class MapUtils {
                         Map<String, Object> currentTarget = target;
                         for (int i = 0; i < parts.length - 1; i++) {
                             String part = parts[i];
-                            // todo: account for Collections
                             currentTarget = currentTarget.containsKey(part) ?
                                     (Map) currentTarget.get(part) :
                                     this.addNode(currentTarget, part);

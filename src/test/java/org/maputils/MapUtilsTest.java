@@ -74,6 +74,20 @@ public class MapUtilsTest {
            put("identifiers", "type");
         }};
         this.mapUtils.merge(this.map1, this.map2, collectionKeys);
+        this.testMergeWithCollectionKeysAssertions();
+    }
+
+    @Test
+    public void testMergeWithCompositeCollectionKeys() {
+        Map<String, String> collectionKeys = new HashMap<String, String>() {{
+            put("people", "firstName,lastName");
+            put("identifiers", "type");
+        }};
+        this.mapUtils.merge(this.map1, this.map2, collectionKeys);
+        this.testMergeWithCollectionKeysAssertions();
+    }
+
+    private void testMergeWithCollectionKeysAssertions() {
         // John assertions
         String johnNickname = (String) this.mapUtils.read(this.map1, "people.0.identifiers.1.value").orElse(null);
         String johnSsn = (String) this.mapUtils.read(this.map1, "people.0.identifiers.0.value").orElse(null);
